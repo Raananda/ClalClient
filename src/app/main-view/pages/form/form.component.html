@@ -1,0 +1,45 @@
+<form [formGroup]="infraRequestForm" novalidate (ngSubmit)="onSubmit()">
+  <mat-card class="shipping-card">
+    <mat-card-header>
+      <mat-card-title>Shipping Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="String" formControlName="data1">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Number" formControlName="data2">
+            <mat-error *ngIf="infraRequestForm.controls['data2'].hasError('required')">
+              First name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput placeholder="Number" formControlName="data3">
+            <mat-error *ngIf="infraRequestForm.controls['data3'].hasError('required')">
+              Last name is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+     
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Post</button>
+      <button mat-raised-button color="primary" (click)="onGetInfra()" type="button">Get</button>
+      <button mat-raised-button color="primary" (click)="onGetListFromJsonFile()" type="button">Get Json</button>     
+    </mat-card-actions>
+  </mat-card>
+</form>
+
+
+
+
+<span>{{Response | json}}</span>
