@@ -24,6 +24,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTreeModule} from '@angular/material/tree';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatRadioModule,
     ReactiveFormsModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTreeModule
   ],
   declarations: [MainViewComponent, SearchDataComponent, ExampleOneComponent, ExampleTwoComponent, MainNavComponent, HomeComponent, FormComponent]
 })
