@@ -1,35 +1,58 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { FormBuilder, Validators } from '@angular/forms';
+import { InfraServerService } from 'src/app/core/services/infra-server.service';
+import { AllDataDTO } from 'src/app/core/models/AllDataDTO';
+import { EmployeesDTO } from 'src/app/core/models/EmployeesDTO';
+import { DepartmentDTO } from 'src/app/core/models/DepartmentDTO';
+import { TaskDTO } from 'src/app/core/models/TaskDTO';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  constructor(private breakpointObserver: BreakpointObserver, private fb: FormBuilder) {}
+  constructor(private breakpointObserver: BreakpointObserver, private fb: FormBuilder, private infraServerService: InfraServerService) { }
 
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Data 1', cols: 2, rows: 1,color: 'lightblue' },
-          { title: 'Data 2', cols:2, rows: 1, color: 'lightblue' }
-        ];
-      }
+  AllData!: AllDataDTO;
+  Employees!: EmployeesDTO[];
+  Departments!: DepartmentDTO[];
+  Tasks!: TaskDTO[];
+  selectedEmployee!: EmployeesDTO;
 
-      return [
-        { title: 'Data 1', cols: 1, rows: 1,color: 'lightblue' },
-        { title: 'Data 2', cols: 2, rows: 1,color: 'lightblue' }
-      ];
-    })
-  );
+  //Table config
+  displayedColumns: string[] = ['TaskNumber', 'TaskName', 'StatusID', 'EmployeeName', 'DepartmentID', 'DueDate'];
+  //dataSource!: TaskDTO[];
+  dataSource = new MatTableDataSource<TaskDTO>();
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  
+  ngOnInit(): void {
+    this.infraServerService.getDataFromJsonFile().subscribe(resp => {
+      this.AllData = resp;
+      this.Employees = this.AllData.employees;
+      this.Departments = this.AllData.departments;
+      this.Tasks = this.AllData.tasks;
+      this.dataSource.data = this.Tasks;
+    });
+  }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+  onSelectedAll() {
+    this.dataSource.data = this.Tasks;
+  }
+
+  onSelectedEmployee(selectedEmployee: EmployeesDTO) {
+    this.selectedEmployee = selectedEmployee;
+    this.dataSource.data = this.Tasks.filter(task => task.employeeName == selectedEmployee.employeeName)
+  }
 
 }
+
+

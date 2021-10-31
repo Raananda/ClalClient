@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AllDataDTO } from '../models/AllDataDTO';
 import { AppInitRequestDTO } from '../models/AppInitRequestDTO';
 import { AppInitResponseDTO } from '../models/AppInitResponseDTO';
 import { UserDTO } from '../models/UserDTO';
@@ -26,20 +27,20 @@ export class InfraServerService {
 
   getInit(): Observable<AppInitResponseDTO> {
     return this.http.get<AppInitResponseDTO>("api/infra/get-init")
-      .pipe( 
+      .pipe(
         catchError(this.handleError)
       );
   }
 
-  getListFromJsonFile(): Observable<UserDTO[]> {
-    return this.http.get<UserDTO[]>("api/JsonLocalFile/get-json-data")
-      .pipe( 
+  getDataFromJsonFile(): Observable<AllDataDTO> {
+    return this.http.get<AllDataDTO>("api/JsonLocalFile/get-json-data")
+      .pipe(
         catchError(this.handleError)
       );
   }
-  postInit(data:AppInitRequestDTO): Observable<any> {
-    return this.http.post<AppInitResponseDTO>("api/infra/post-init",data,httpOptions)
-      .pipe( 
+  postInit(data: AppInitRequestDTO): Observable<any> {
+    return this.http.post<AppInitResponseDTO>("api/infra/post-init", data, httpOptions)
+      .pipe(
         catchError(this.handleError)
       );
   }

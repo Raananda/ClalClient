@@ -39,9 +39,9 @@ export class FormComponent implements OnInit{
   }
 
   onGetListFromJsonFile(){
-    this.infraServerService.getListFromJsonFile().subscribe(resp => {
-      this.Response = resp;
-    });
+    // this.infraServerService.getListFromJsonFile().subscribe(resp => {
+    //   this.Response = resp;
+    // });
   }
 
 }
